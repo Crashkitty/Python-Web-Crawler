@@ -1,0 +1,19 @@
+import requests
+from bs4 import BeautifulSoup
+
+def crawl(url):
+    # Send an HTTP request to the website
+    response = requests.get(url)
+
+    # Parse the HTML
+    soup = BeautifulSoup(response.text, 'html.parser')
+
+    # Extract the data you need
+    data = soup.find('div', {'class': 'my-data'})
+
+    # Find links to other pages
+    links = soup.find_all('a')
+    for link in links:
+        href = link.get('href')
+        if href:
+            crawl(href)
